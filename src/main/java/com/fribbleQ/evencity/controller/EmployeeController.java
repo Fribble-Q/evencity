@@ -33,4 +33,11 @@ public class EmployeeController {
         return R.success("logout User");
    }
 
+   @PostMapping
+    public R<String> save(HttpServletRequest request,@RequestBody Employee employee){
+        log.info("employee save {}",employee.toString());
+        employeeService.SaveEmployee(request,employee);
+        return R.success("save employee");
+   }
+
 }

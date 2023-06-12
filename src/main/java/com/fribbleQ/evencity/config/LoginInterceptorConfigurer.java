@@ -5,17 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class LoginInterceptorConfigurer extends WebMvcConfigurationSupport {
+public class LoginInterceptorConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        List<String> patterns = new ArrayList<String>();
+        List<String> patterns = new ArrayList<>();
         patterns.add("/employee/login");
         patterns.add("/employee/logout");
         patterns.add("/backend/page/login/login.html");

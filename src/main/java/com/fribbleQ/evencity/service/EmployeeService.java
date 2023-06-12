@@ -13,5 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Service
 public interface EmployeeService extends IService<Employee> {
-    public R<Employee> login(HttpServletRequest Request, Employee employee);
+     R<Employee> login(HttpServletRequest Request, Employee employee);
+     void SaveEmployee(HttpServletRequest request,Employee employee);
 }
