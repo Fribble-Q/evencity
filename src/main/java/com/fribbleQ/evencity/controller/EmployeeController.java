@@ -1,15 +1,13 @@
 package com.fribbleQ.evencity.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fribbleQ.evencity.common.R;
 import com.fribbleQ.evencity.entity.Employee;
 import com.fribbleQ.evencity.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +36,13 @@ public class EmployeeController {
         log.info("employee save {}",employee.toString());
         employeeService.SaveEmployee(request,employee);
         return R.success("save employee");
+   }
+
+   @GetMapping("/page")
+   public R page(int page,int pageSize,String name){
+
+       Page<Employee> module = employeeService.PageModule(page, pageSize, name);
+       return new R(module,1);
    }
 
 }

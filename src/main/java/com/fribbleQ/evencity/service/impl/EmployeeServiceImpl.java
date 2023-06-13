@@ -2,12 +2,15 @@ package com.fribbleQ.evencity.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fribbleQ.evencity.common.R;
 import com.fribbleQ.evencity.entity.Employee;
 import com.fribbleQ.evencity.mapper.EmployeeMapper;
 import com.fribbleQ.evencity.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -64,6 +67,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setCreateUser(empId);
         employee.setUpdateUser(empId);
         employeeMapper.insert(employee);
+    }
+
+    @Override
+    public Page<Employee> PageModule(int page, int pageSize, String name) {
+
+        Page<Employee> page1 = new Page<>(page, pageSize);
+        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(name),Employee::getName,name);
+        wrapper.orderByDesc(Employee::getUpdateTime);
+        employeeMapper.selectPage(page1,wrapper);
+        return page1;
     }
 
 
