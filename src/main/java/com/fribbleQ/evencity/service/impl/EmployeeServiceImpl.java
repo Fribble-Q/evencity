@@ -2,9 +2,9 @@ package com.fribbleQ.evencity.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fribbleQ.evencity.common.BaseThreadLocal;
 import com.fribbleQ.evencity.common.R;
 import com.fribbleQ.evencity.entity.Employee;
 import com.fribbleQ.evencity.mapper.EmployeeMapper;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
@@ -57,15 +56,19 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Override
     public void SaveEmployee(HttpServletRequest request,Employee employee) {
-        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        // employee.setCreateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
+        long ids = Thread.currentThread().getId();
+        log.info("MymetaObjectHandler线程 id={}",ids);
         Employee emp = (Employee) request.getSession().getAttribute("employee");
+        Long id = emp.getId();;
+        BaseThreadLocal.setBase(id);
+        Long base = BaseThreadLocal.getBase();
         HttpSession session = request.getSession();
         log.info("当前session{}",session);
-        Long empId = emp.getId();
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+        // employee.setCreateUser(empId);
+        // employee.setUpdateUser(empId);
         employeeMapper.insert(employee);
     }
 
@@ -78,6 +81,27 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         wrapper.orderByDesc(Employee::getUpdateTime);
         employeeMapper.selectPage(page1,wrapper);
         return page1;
+    }
+
+    @Override
+    public R<String> EmployeeUpdate(HttpServletRequest request,Employee employee) {
+        long ids = Thread.currentThread().getId();
+        log.info("MymetaObjectHandler线程 id={}",ids);
+        Employee emp = (Employee) request.getSession().getAttribute("employee");
+        Long id = emp.getId();;
+        BaseThreadLocal.setBase(id);
+        // employee.setUpdateTime(LocalDateTime.now());
+        // employee.setUpdateUser(emp.getId());
+        employeeMapper.updateById(employee);
+        return R.success("empStautUpdate");
+    }
+
+    @Override
+    public R SelectById(long id) {
+
+        Employee employee = employeeMapper.selectById(id);
+        log.info("当前线程的employee{}",employee);
+        return R.success(employee);
     }
 
 

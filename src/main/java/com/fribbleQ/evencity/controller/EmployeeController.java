@@ -40,9 +40,21 @@ public class EmployeeController {
 
    @GetMapping("/page")
    public R page(int page,int pageSize,String name){
-
        Page<Employee> module = employeeService.PageModule(page, pageSize, name);
        return new R(module,1);
    }
+
+   @PutMapping
+    public R employee(HttpServletRequest request,@RequestBody Employee employee){
+       R<String> update = employeeService.EmployeeUpdate(request, employee);
+       return update;
+   }
+
+   @GetMapping(value = "/{id}")
+   public R getByid (@PathVariable long id){
+        R<Employee> employeeById  =employeeService.SelectById(id);
+        return employeeById;
+    }
+
 
 }
