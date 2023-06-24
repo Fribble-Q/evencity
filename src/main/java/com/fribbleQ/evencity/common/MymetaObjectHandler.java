@@ -15,13 +15,15 @@ public class MymetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("createUser", BaseThreadLocal.getBase());
+        metaObject.setValue("updateTime", LocalDateTime.now());
+        metaObject.setValue("updateUser",BaseThreadLocal.getBase());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        long id = Thread.currentThread().getId();
-        log.info("MymetaObjectHandler线程 id={}",id);
+        metaObject.setValue("createTime", LocalDateTime.now());
+        metaObject.setValue("createUser", BaseThreadLocal.getBase());
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("updateUser",BaseThreadLocal.getBase() );
+        metaObject.setValue("updateUser",BaseThreadLocal.getBase());
     }
 }

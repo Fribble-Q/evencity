@@ -4,21 +4,26 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  菜品
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-
 
     //菜品名称
     private String name;
@@ -69,6 +74,20 @@ public class Dish implements Serializable {
 
 
     //是否删除
+    @TableField(javaType = false)
     private Integer isDeleted;
 
+    public Dish(Dish dish) {
+        if (Objects.nonNull(dish)){
+            this.id=dish.id;
+            this.name=dish.name;
+            this.categoryId=dish.categoryId;
+            this.price=dish.price;
+            this.code=dish.code;
+            this.image=dish.image;
+            this.description=dish.description;
+            this.status=dish.status;
+            this.sort=dish.sort;
+        }
+    }
 }

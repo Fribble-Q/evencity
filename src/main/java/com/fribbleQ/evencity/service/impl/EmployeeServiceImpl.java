@@ -56,25 +56,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Override
     public void SaveEmployee(HttpServletRequest request,Employee employee) {
-        // employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        // employee.setCreateTime(LocalDateTime.now());
-        // employee.setUpdateTime(LocalDateTime.now());
-        long ids = Thread.currentThread().getId();
-        log.info("MymetaObjectHandler线程 id={}",ids);
         Employee emp = (Employee) request.getSession().getAttribute("employee");
-        Long id = emp.getId();;
+        Long id = emp.getId();
         BaseThreadLocal.setBase(id);
-        Long base = BaseThreadLocal.getBase();
         HttpSession session = request.getSession();
         log.info("当前session{}",session);
-        // employee.setCreateUser(empId);
-        // employee.setUpdateUser(empId);
         employeeMapper.insert(employee);
     }
 
     @Override
     public Page<Employee> PageModule(int page, int pageSize, String name) {
-
         Page<Employee> page1 = new Page<>(page, pageSize);
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotEmpty(name),Employee::getName,name);
@@ -90,8 +81,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         Employee emp = (Employee) request.getSession().getAttribute("employee");
         Long id = emp.getId();;
         BaseThreadLocal.setBase(id);
-        // employee.setUpdateTime(LocalDateTime.now());
-        // employee.setUpdateUser(emp.getId());
         employeeMapper.updateById(employee);
         return R.success("empStautUpdate");
     }

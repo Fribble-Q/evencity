@@ -15,3 +15,9 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    accessKeyId: LTAI5tGxuzP3HcjTxKDZ43ra
+    accessKeySecret: CLeNMT73wGtO02MZ6P5TOoHOZLnyGr
+    bucketName: fribble-q
